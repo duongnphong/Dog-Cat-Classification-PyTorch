@@ -1,8 +1,9 @@
+from torch.utils.data import DataLoader
 from models import Resnet18Model
 from data import LoadData
 import torch
 
-# Define gloal variable
+# Define global variable
 BATCH_SIZE = 64
 LEARNING_RATE = 1e-5
 DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -10,15 +11,13 @@ print(DEVICE)
 EPOCH = 5
 SAVED_MODEL_NAME = "./model.pth"
 
-from torch.utils.data import DataLoader
 
 def train():
     # model = VGGModel()
     model = Resnet18Model()
-    #khai báo instance của class LoadData
+    # khai báo instance của class LoadData
     train_data = LoadData(2, "./data/train")
     test_data = LoadData(2, "./data/test")
-
 
     # LoadData trên các instance => kiểu list
     train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True)
@@ -32,9 +31,8 @@ def train():
     #     print(train_data.directs[i])
     #     print(train_data.__getitem__(i))
 
-
     # define kiểu optimize của model
-    optimizer = torch.optim.Adam(model.parameters(), lr = LEARNING_RATE)
+    optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
     # so sánh loss xác suất
     loss_fn = torch.nn.CrossEntropyLoss()
@@ -63,9 +61,9 @@ def train():
             optimizer.step()
             # print("Output:", output)
             # print("Target:", target)
-            
+
             if idx % 50 == 0:
-                print("Batch id:" ,idx, "| Loss:", loss.item())
+                print("Batch id:", idx, "| Loss:", loss.item())
 
         # valid, ko update trọng số
         model.eval()
@@ -75,14 +73,13 @@ def train():
             target = target.to(DEVICE)
             output = model(data)
 
-
             pred = output.argmax(dim=1, keepdim=True)
             target = target.argmax(dim=1, keepdim=True)
             correct += pred.eq(target.view_as(pred)).sum().item()
 
         print(str(correct) + '/' + str(len(test_loader.dataset)))
 
-
         # torch.save(model.state_dict(), SAVED_MODEL_NAME)
+
 
 train()
