@@ -1,0 +1,7 @@
+__pycache__/
+data/
+*.pth
+pre.py
+test.jpg
+test.py
+venv*/
