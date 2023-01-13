@@ -7,12 +7,10 @@ import torch
 BATCH_SIZE = 64
 LEARNING_RATE = 1e-5
 DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-print(DEVICE)
 EPOCH = 5
 SAVED_MODEL_NAME = "./model.pth"
 
-
-def train():
+def train(): 
     # model = VGGModel()
     model = Resnet18Model()
     # khai báo instance của class LoadData
@@ -80,6 +78,5 @@ def train():
         print(str(correct) + '/' + str(len(test_loader.dataset)))
 
         # torch.save(model.state_dict(), SAVED_MODEL_NAME)
-
 
 train()
