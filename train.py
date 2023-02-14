@@ -7,13 +7,13 @@ import torch
 BATCH_SIZE = 64
 LEARNING_RATE = 1e-5
 DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-EPOCH = 5
+EPOCH = 10
 SAVED_MODEL_NAME = "./model.pth"
 
 def train(): 
     # model = VGGModel()
     model = Resnet18Model()
-    # khai báo instance của class LoadData
+    # instance of class LoadData
     train_data = LoadData(2, "./data/train")
     test_data = LoadData(2, "./data/test")
 
@@ -21,18 +21,10 @@ def train():
     train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True)
     test_loader = DataLoader(test_data, batch_size=BATCH_SIZE)
 
-    # boo = 1500
-    # bar = 15000
-    # print("Links of test data: ", len(test_data.directs))
-    # print("Links of train data: ", len(train_data.directs))
-    # for i in range(100):
-    #     print(train_data.directs[i])
-    #     print(train_data.__getitem__(i))
-
     # define kiểu optimize của model
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
-    # so sánh loss xác suất
+    # define loss function
     loss_fn = torch.nn.CrossEntropyLoss()
 
     # transfer to GPU
@@ -42,7 +34,7 @@ def train():
 
     # train loop
     for i in range(EPOCH):
-        # train and cập nhật trọng số
+        # train and update parameters
         print("EPOCH:", i)
         model.train()
         for idx, (data, target) in enumerate(train_loader):
@@ -53,17 +45,16 @@ def train():
             output = model(data)
 
             loss = loss_fn(output, torch.max(target, 1)[1])
-            # lan truyền ngược, tính toán hướng cập nhật trọng số
+            # backpropagation, caclulate direction to update parameters
             loss.backward()
-            # chạy lr theo hướng đã tính theo loss.backward()
+            # apply lr according to the direction from loss.backward()
             optimizer.step()
-            # print("Output:", output)
-            # print("Target:", target)
+
 
             if idx % 50 == 0:
                 print("Batch id:", idx, "| Loss:", loss.item())
 
-        # valid, ko update trọng số
+        # valid loop
         model.eval()
         correct = 0
         for idx, (data, target) in enumerate(test_loader):
@@ -77,6 +68,6 @@ def train():
 
         print(str(correct) + '/' + str(len(test_loader.dataset)))
 
-        # torch.save(model.state_dict(), SAVED_MODEL_NAME)
+        torch.save(model.state_dict(), SAVED_MODEL_NAME)
 
 train()
