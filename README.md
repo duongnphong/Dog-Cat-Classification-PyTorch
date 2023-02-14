@@ -9,6 +9,14 @@ Personal project to build deep learning model to classification images of Dogs a
 
 The data  used for the project was taken from [Kaggle](https://www.kaggle.com/c/dogs-vs-cats), including labelled images of Dogs and Cats (12500 images each), and unlabelled ones. 
 
+## Depedencies and Installation
+- Enviroments: Python 3.10.6 + CUDA 12.0
+
+- Required library:
+    ``` bash
+    pip install -r requirements.txt
+    ```
+
 ## Data Preparation
 
 Labelled data was used to train the model, 12500 images for each categories was divided 80% as train data and 20% as test data as shown:
@@ -20,14 +28,6 @@ $\qquad$ $\qquad$ $\qquad$  | -- dogs (10000 images) <br>
 $\qquad$ $\qquad$ test/ <br>
 $\qquad$ $\qquad$ $\qquad$  | -- cat (2500 images) <br>
 $\qquad$ $\qquad$ $\qquad$  | -- dogs (2500 images) <br>
-
-## Depedencies and Installation
-- Enviroments: Python 3.10.6 + CUDA 12.0
-
-- Required library:
-    ``` bash
-    pip install -r requirements.txt
-    ```
 
 ## Training
 
